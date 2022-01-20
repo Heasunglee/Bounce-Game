@@ -5,18 +5,17 @@ from random import randint
 #Colors
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
-GREEN = (0, 255, 0)
 RED = (255, 0, 0)
 BLUE = (0, 0, 255)
-ORANGE = (255,215,0)
 YELLOW = (255, 255, 0)
-PURPLE = (221,160,221)
 
 score = 0
 lives = 3
 pygame.display.set_caption("Bounce Game")
 
 
+
+#Class for top bricks
 class Brick(pygame.sprite.Sprite):
     def __init__(self, color, width, height):
         super().__init__()
@@ -27,7 +26,7 @@ class Brick(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
 
 
-
+#Class for the bouncing ball
 class Ball(pygame.sprite.Sprite):
     def __init__(self, color, width, height):
         super().__init__()
@@ -47,7 +46,7 @@ class Ball(pygame.sprite.Sprite):
         self.velocity[1] = randint(-8,8)
 
 
-
+#Platform class
 class player(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
@@ -83,43 +82,49 @@ bricks = pygame.sprite.Group()
 border = pygame.sprite.Group()
 
 
-
+#Positioning Bricks and Color
 for i in range(15):
     brick = Brick(YELLOW, 20, 15)
     brick.rect.x = random.randrange(screen_width)
     brick.rect.y = 60
     all_sprites_list.add(brick)
     bricks.add(brick)
+
 for i in range(15):
     brick = Brick(YELLOW, 20, 15)
     brick.rect.x = random.randrange(screen_width)
     brick.rect.y = 80
     all_sprites_list.add(brick)
     bricks.add(brick)
+
 for i in range(15):
     brick = Brick(RED, 20, 15)
     brick.rect.x = random.randrange(screen_width)
     brick.rect.y = 100
     all_sprites_list.add(brick)
     bricks.add(brick)
+
 for i in range(15):
     brick = Brick(RED, 20, 15)
     brick.rect.x = random.randrange(screen_width)
     brick.rect.y = 120
     all_sprites_list.add(brick)
     bricks.add(brick)
+
 for i in range(15):
     brick = Brick(YELLOW, 20, 15)
     brick.rect.x = random.randrange(screen_width)
     brick.rect.y = 140
     all_sprites_list.add(brick)
     bricks.add(brick)
+
 for i in range(15):
     brick = Brick(YELLOW, 20, 15)
     brick.rect.x = random.randrange(screen_width)
     brick.rect.y = 160
     all_sprites_list.add(brick)
     bricks.add(brick)
+
 done = False
 clock = pygame.time.Clock()
 all_sprites_list.add(player)
@@ -132,6 +137,7 @@ while not done:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             done = True
+
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFT:
                 player.changespeed(-7, 0)
@@ -155,7 +161,8 @@ while not done:
     if ball.rect.y>490:
         ball.velocity[1] = -ball.velocity[1]
         lives -= 1
-
+        
+        #Gameover 
         if lives == 0:
             text = font.render("GAME OVER", True, RED)
             screen.blit(text, (250,300))
@@ -172,6 +179,7 @@ while not done:
       ball.bounce()
     brick_collision_list = pygame.sprite.spritecollide(ball,bricks,False)
 
+    #Scoring by destroying bricks
     for brick in brick_collision_list:
       ball.bounce()
       score += 1
@@ -192,4 +200,5 @@ while not done:
     pygame.display.flip()
     clock.tick(60)
 
+pygame.quit()
 pygame.quit()
